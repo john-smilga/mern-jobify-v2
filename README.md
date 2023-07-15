@@ -6085,6 +6085,7 @@ export default Wrapper;
 
 #### Local Build
 
+- remove default values from inputs in Register and Login
 - navigate to client and build front-end
 
 ```sh
