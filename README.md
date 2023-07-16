@@ -6113,6 +6113,36 @@ app.get('*', (req, res) => {
 - sign up of for account
 - create git repository
 
+#### Build Front-End on Render
+
+- remove public folder
+
+package.json
+
+```js
+ "scripts": {
+    "setup-production-app": "npm i && cd client && npm i && npm run build",
+  },
+```
+
+server.js
+
+```js
+app.use(express.static(path.resolve(__dirname, './client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './client/dist', 'index.html'));
+});
+```
+
+- change build command on render
+
+```sh
+npm run setup-production-app
+```
+
+- push up to github
+
 #### Upload Image As Buffer
 
 ```sh
@@ -6127,7 +6157,7 @@ import DataParser from 'datauri/parser.js';
 import path from 'path';
 
 const storage = multer.memoryStorage();
-export const upload = multer({ storage });
+const upload = multer({ storage });
 
 const parser = new DataParser();
 
@@ -6135,11 +6165,15 @@ export const formatImage = (file) => {
   const fileExtension = path.extname(file.originalname).toString();
   return parser.format(fileExtension, file.buffer).content;
 };
+
+export default upload;
 ```
 
 controller/userController.js
 
 ```js
+import { formatImage } from '../middleware/multerMiddleware.js';
+
 export const updateUser = async (req, res) => {
   const newUser = { ...req.body };
   delete newUser.password;
