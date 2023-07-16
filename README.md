@@ -6135,6 +6135,14 @@ app.get('*', (req, res) => {
 });
 ```
 
+#### Test Locally
+
+- remove client/dist and client/node_modules
+- remove node_modules and package-lock.json (optional)
+- run "npm run setup-production-app", followed by "node server"
+
+#### Test in Production
+
 - change build command on render
 
 ```sh
@@ -6189,5 +6197,42 @@ export const updateUser = async (req, res) => {
     await cloudinary.v2.uploader.destroy(updatedUser.avatarPublicId);
   }
   res.status(StatusCodes.OK).json({ msg: 'update user' });
+};
+```
+
+#### Setup Global Loading
+
+- create loading component (import/export)
+- check for loading in DashboardLayout page
+
+components/Loading.jsx
+
+```js
+const Loading = () => {
+  return <div className='loading'></div>;
+};
+
+export default Loading;
+```
+
+DashboardLayout.jsx
+
+```js
+import { useNavigation } from 'react-router-dom';
+import { Loading } from '../components';
+
+const DashboardLayout = ({ isDarkThemeEnabled }) => {
+  const navigation = useNavigation();
+  const isPageLoading = navigation.state === 'loading';
+
+  return (
+    <Wrapper>
+      ...
+      <div className='dashboard-page'>
+        {isPageLoading ? <Loading /> : <Outlet context={{ user }} />}
+      </div>
+      ...
+    </Wrapper>
+  );
 };
 ```
