@@ -78,7 +78,7 @@ export default App;
 - won't need to stop/start server
 
 ```sh
-npm install @tanstack/react-query@4.29.5 axios@1.3.6 dayjs@1.11.7 react-icons@4.8.0 react-router-dom@6.10.0 react-toastify@9.1.2 recharts@2.5.0 styled-components@5.3.10
+npm install @tanstack/react-query@4.29.5 @tanstack/react-query-devtools@4.29.6 axios@1.3.6 dayjs@1.11.7 react-icons@4.8.0 react-router-dom@6.10.0 react-toastify@9.1.2 recharts@2.5.0 styled-components@5.3.10
 
 ```
 
@@ -1740,8 +1740,7 @@ console.log(value);
 #### Install Packages and Setup Install Script
 
 ```sh
-npm install bcryptjs@2.4.3 concurrently@8.0.1 cookie-parser@1.4.6 dayjs@1.11.7 dotenv@16.0.3 express@4.18.2 express-async-errors@3.1.1 express-validator@7.0.1 http-status-codes@2.2.0 jsonwebtoken@9.0.0 mongoose@7.0.5 morgan@1.10.0 multer@1.4.5-lts.1 nanoid@4.0.2 nodemon@2.0.22 cloudinary@1.37.3 dayjs@1.11.9
-datauri@4.1.0
+npm install bcryptjs@2.4.3 concurrently@8.0.1 cookie-parser@1.4.6 dayjs@1.11.7 dotenv@16.0.3 express@4.18.2 express-async-errors@3.1.1 express-validator@7.0.1 http-status-codes@2.2.0 jsonwebtoken@9.0.0 mongoose@7.0.5 morgan@1.10.0 multer@1.4.5-lts.1 nanoid@4.0.2 nodemon@2.0.22 cloudinary@1.37.3 dayjs@1.11.9 datauri@4.1.0
 
 ```
 
@@ -6115,7 +6114,8 @@ app.get('*', (req, res) => {
 
 #### Build Front-End on Render
 
-- remove public folder
+- add script
+- change path
 
 package.json
 
@@ -6152,6 +6152,8 @@ npm run setup-production-app
 - push up to github
 
 #### Upload Image As Buffer
+
+- remove public folder
 
 ```sh
 npm i datauri@4.1.0
@@ -6233,6 +6235,42 @@ const DashboardLayout = ({ isDarkThemeEnabled }) => {
       </div>
       ...
     </Wrapper>
+  );
+};
+```
+
+#### React Query
+
+React Query is a powerful library that simplifies data fetching, caching, and synchronization in React applications. It provides a declarative and intuitive way to manage remote data by abstracting away the complex logic of fetching and caching data from APIs. React Query offers features like automatic background data refetching, optimistic updates, pagination support, and more, making it easier to build performant and responsive applications that rely on fetching and manipulating data.
+
+[React Query Docs](https://tanstack.com/query/v4/docs/react/overview)
+
+- in the client
+
+```sh
+npm i @tanstack/react-query@4.29.5 @tanstack/react-query-devtools@4.29.6
+```
+
+App.jsx
+
+```js
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
+
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 ```
