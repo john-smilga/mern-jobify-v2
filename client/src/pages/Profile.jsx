@@ -1,6 +1,6 @@
 import { FormRow, SubmitBtn } from '../components';
 import Wrapper from '../assets/wrappers/DashboardFormPage';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, redirect } from 'react-router-dom';
 import { Form } from 'react-router-dom';
 import customFetch from '../utils/customFetch';
 import { toast } from 'react-toastify';
@@ -18,10 +18,11 @@ export const action =
       await customFetch.patch('/users/update-user', formData);
       queryClient.invalidateQueries(['user']);
       toast.success('Profile updated successfully');
+      return redirect('/dashboard');
     } catch (error) {
       toast.error(error?.response?.data?.msg);
+      return null;
     }
-    return null;
   };
 
 const Profile = () => {
