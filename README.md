@@ -6597,10 +6597,10 @@ const allJobsQuery = (params) => {
   return {
     queryKey: [
       'jobs',
-      search ?? 'all',
+      search ?? '',
       jobStatus ?? 'all',
       jobType ?? 'all',
-      sort ?? 'all',
+      sort ?? 'newest',
       page ?? 1,
     ],
     queryFn: async () => {
@@ -6615,26 +6615,12 @@ const allJobsQuery = (params) => {
 export const loader =
   (queryClient) =>
   async ({ request }) => {
-    try {
-      const url = new URL(request.url);
-      const search = url.searchParams.get('search');
-      const jobStatus = url.searchParams.get('jobStatus');
-      const jobType = url.searchParams.get('jobType');
-      const sort = url.searchParams.get('sort');
-      const page = url.searchParams.get('page');
-      const params = { jobStatus, jobType, sort, page };
-      if (search) {
-        params.search = search;
-      }
-      await queryClient.ensureQueryData(allJobsQuery(params));
+    const params = Object.fromEntries([
+      ...new URL(request.url).searchParams.entries(),
+    ]);
 
-      return {
-        searchValues: { search, jobStatus, jobType, sort, page },
-      };
-    } catch (error) {
-      toast.error(error.response.data.msg);
-      return error;
-    }
+    await queryClient.ensureQueryData(allJobsQuery(params));
+    return { searchValues: { ...params } };
   };
 
 const AllJobs = () => {
