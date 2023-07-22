@@ -10,7 +10,7 @@ import rateLimiter from 'express-rate-limit';
 
 const apiLimiter = rateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1,
+  max: 15,
   message: { msg: 'IP rate limit exceeded, retry in 15 minutes.' },
 });
 
