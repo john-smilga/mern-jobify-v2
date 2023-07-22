@@ -7,6 +7,8 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 
 // routers
 import jobRouter from './routes/jobRouter.js';
@@ -34,6 +36,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(path.resolve(__dirname, './client/dist')));
 app.use(cookieParser());
 app.use(express.json());
+app.use(helmet());
+app.use(mongoSanitize());
 
 app.get('/', (req, res) => {
   res.send('Hello World');
