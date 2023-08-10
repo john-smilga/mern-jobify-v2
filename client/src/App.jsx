@@ -30,13 +30,13 @@ import { action as profileAction } from './pages/Profile';
 import { loader as statsLoader } from './pages/Stats';
 import ErrorElement from './components/ErrorElement';
 
-const checkDefaultTheme = () => {
+export const checkDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
   document.body.classList.toggle('dark-theme', isDarkTheme);
   return isDarkTheme;
 };
 
-const isDarkThemeEnabled = checkDefaultTheme();
+checkDefaultTheme();
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,12 +68,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'dashboard',
-        element: (
-          <DashboardLayout
-            isDarkThemeEnabled={isDarkThemeEnabled}
-            queryClient={queryClient}
-          />
-        ),
+        element: <DashboardLayout queryClient={queryClient} />,
         loader: dashboardLoader(queryClient),
         children: [
           {
