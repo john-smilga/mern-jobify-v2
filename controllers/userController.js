@@ -17,6 +17,7 @@ export const getApplicationStats = async (req, res) => {
 export const updateUser = async (req, res) => {
   const newUser = { ...req.body };
   delete newUser.password;
+  delete newUser.role;
 
   if (req.file) {
     const file = formatImage(req.file);
