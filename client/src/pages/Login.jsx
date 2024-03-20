@@ -20,12 +20,13 @@ export const action =
     }
   };
 
+
 const Login = () => {
   const navigate = useNavigate();
 
   const loginDemoUser = async () => {
     const data = {
-      email: 'test@test.com',
+      email: 'tester@test.com',
       password: 'secret123',
     };
     try {
@@ -36,6 +37,9 @@ const Login = () => {
       toast.error(error?.response?.data?.msg);
     }
   };
+
+
+
   return (
     <Wrapper>
       <Form method='post' className='form'>
